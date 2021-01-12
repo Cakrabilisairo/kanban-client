@@ -1,0 +1,49 @@
+.backlog, .todo, .doing, .done{
+    background-color: rgb(212, 208, 208);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    
+}
+
+.container{
+    margin-top: 30px;
+}
+
+a{
+    color: black;
+    
+}
+
+.delete_forever:hover{
+    color: red;
+}
+
+#category{
+    display:flex;
+    justify-content: space-between;
+}
+
+.add_box{
+    margin-top: 8px;
+}
+
+#form-add, #form-edit, #form-login, #form-register{
+    max-width: 30%;
+    background-color: rgb(179, 210, 216);
+    padding: 20px;
+    border-radius: 10px;
+
+}
+h1{
+    text-align: center;
+}
+
+#to-logIn, #to-signUp{
+    text-align: center;
+}
+
+.g-signin2{
+    display:flex;
+    justify-content: center;
+}
