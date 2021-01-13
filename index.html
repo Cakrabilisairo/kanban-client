@@ -6,160 +6,162 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="321239236526-oei5si76bq1o3tg7bbauqdjpf1eja2no.apps.googleusercontent.com">
     
     <title>Document</title>
 </head>
-
-<!-- nav bar -->
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Kanban</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-            </ul>
-            
-            <button type="button" class="btn btn-danger">log Out</button>
-          </div>
-        </div>
-      </nav>
+  <div id="app">
 
-<!-- Category -->
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-2 col-md-6 backlog">
+    <!-- nav bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="page == 'homepage'">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Kanban</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#" @click.prevent="addBtn">Add Task</a>
+            </li>
+          </ul>
+          
+          <button type="button" class="btn btn-danger" @click="logout">log Out</button>
+        </div>
+      </div>
+    </nav>
+
+  <!-- Category -->
+    <div class="container" v-if="page == 'homepage'">
+      <div class="row">
+        <div class="col-xl-3 col-md-6 backlog">
             <div id="category">
-                <h3>Back log</h3>
-                <a href=""><i class="material-icons add_box ">add_box</i></a>
+              <h3>Back log</h3>
             </div>
-                <div class="card border-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">username</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Task title</h5>
-                        <p class="card-text">Description</p>
-                        <a href=""><i class="material-icons">edit</i></a>
+              <div class="card border-light mb-3" style="max-width: 18rem;" v-for = "(item,idx) in  backLogs" :key="idx">
+                  <div class="card-header">{{item.User.username}}</div>
+                  <div class="card-body">
+                      <h5 class="card-title">{{item.title}}</h5>
+                      <p class="card-text">{{item.description}}</p>
+                      <div id="tools-ikon">
+                        <a href="" @click="edit-btn"><i class="material-icons edit">edit</i></a>
+                        <a href=""><i class="material-icons update">update</i></a>
                         <a href=""><i class="material-icons delete_forever">delete_forever</i></a>
                     </div>
-                    <div class="card-footer bg-transparent border-light text-muted">last update</div>
-                </div>
-                <div class="card border-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">username</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Task title</h5>
-                        <p class="card-text">Description</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-light text-muted">last update</div>
-                </div> 
-            </div>
-            
-        <div class="col-xl-2 col-md-6 todo">
-            <div id="category">
-                <h3>Todo</h3>
-                <a href=""><i class="material-icons add_box ">add_box</i></a>
-            </div>
-            <div class="card border-light mb-3" style="max-width: 18rem;">
-                <div class="card-header">username</div>
-                <div class="card-body">
-                  <h5 class="card-title">Task title</h5>
-                  <p class="card-text">Description</p>
-                  <a href=""><i class="material-icons">edit</i></a>
+                 </div>
+                  <div class="card-footer bg-transparent border-light text-muted">{{item.updatedAt}}</div>
+              </div>
+          </div>
+          
+      <div class="col-xl-3 col-md-6 todo">
+          <div id="category">
+              <h3>Todo</h3>
+          </div>
+          <div class="card border-light mb-3" style="max-width: 18rem;" v-for = "(item,idx) in  todo" :key="idx">
+              <div class="card-header">{{item.User.username}}</div>
+              <div class="card-body">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.description}}</p>
+                <div id="tools-ikon">
+                  <a href=""><i class="material-icons edit">edit</i></a>
+                  <a href=""><i class="material-icons update">update</i></a>
                   <a href=""><i class="material-icons delete_forever">delete_forever</i></a>
                 </div>
-                <div class="card-footer bg-transparent border-light text-muted">last update</div>
-            </div>
-        </div>
-        
-        <div class="col-xl-2 col-md-6 doing">
-            <div id="category">
-                <h3>Doing</h3>
-                <a href=""><i class="material-icons add_box ">add_box</i></a>
-            </div>
-            <div class="card border-light mb-3" style="max-width: 18rem;">
-                <div class="card-header">username</div>
-                <div class="card-body">
-                  <h5 class="card-title">Task title</h5>
-                  <p class="card-text">Description</p>
-                  <a href=""><i class="material-icons">edit</i></a>
-                  <a href=""><i class="material-icons delete_forever">delete_forever</i></a>
-                </div>
-                <div class="card-footer bg-transparent border-light text-muted">last update</div>
-            </div> 
-        </div>
-        <div class="col-xl-2 col-md-6 done">
-            <div id="category">
-                <h3>Done</h3>
-                <a href=""><i class="material-icons add_box ">add_box</i></a>
-            </div>
-            
-            <div class="card border-light mb-3" style="max-width: 18rem;">
-                <div class="card-header">username</div>
-                <div class="card-body">
-                  <h5 class="card-title">Task title</h5>
-                  <p class="card-text">Description</p>
-                  <a href=""><i class="material-icons">edit</i></a>
-                  <a href=""><i class="material-icons delete_forever">delete_forever</i></a>
-                </div>
-                <div class="card-footer bg-transparent border-light border-top text-muted">last update</div>
-            </div> 
-        </div> 
+              </div>
+              <div class="card-footer bg-transparent border-light text-muted">{{item.updatedAt}}</div>
+          </div>
       </div>
       
-<!-- Form Add task-->
-<div class="container">
-    <form id="form-add">
-        <h1>Add Task</h1>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Task Title</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        </div>
-        <div class="form-group mb-3">
-            <label for="exampleFormControlTextarea1">Description</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
-        
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="inputGroupSelect01">Category</label>
-            </div>
-            <select class="custom-select" id="inputGroupSelect01">
-              <option selected>Choose</option>
-              <option value="backLog">Back Log</option>
-              <option value="todo">Todo</option>
-              <option value="doing">Doing</option>
-              <option value="done">Done</option>
-            </select>
+      <div class="col-xl-3 col-md-6 doing">
+          <div id="category">
+              <h3>Doing</h3>
           </div>
-        <button type="submit" class="btn btn-primary">Add Task</button>
-        <button type="submit" class="btn btn-danger">Cancel</button>
-        
-      </form>
+          <div class="card border-light mb-3" style="max-width: 18rem;" v-for = "(item,idx) in doing" :key="idx">
+              <div class="card-header">{{item.User.username}}</div>
+              <div class="card-body">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.description}}</p>
+                <div id="tools-ikon">
+                  <a href=""><i class="material-icons edit">edit</i></a>
+                  <a href=""><i class="material-icons update">update</i></a>
+                  <a href=""><i class="material-icons delete_forever">delete_forever</i></a>
+               </div>
+              </div>
+              <div class="card-footer bg-transparent border-light text-muted">{{item.updatedAt}}</div>
+          </div> 
+      </div>
+      <div class="col-xl-3 col-md-6 done">
+          <div id="category">
+              <h3>Done</h3>
+          </div>
+          <div class="card border-light mb-3" style="max-width: 18rem;" v-for = "(item,idx) in  done" :key="idx">
+              <div class="card-header">{{item.User.username}}</div>
+              <div class="card-body">
+                <h5 class="card-title">{{item.title}}</h5>
+                <p class="card-text">{{item.description}}</p>
+                <div id="tools-ikon">
+                  <a href=""><i class="material-icons edit">edit</i></a>
+                  <a href=""><i class="material-icons update">update</i></a>
+                  <a href=""><i class="material-icons delete_forever">delete_forever</i></a>
+                </div>
+              </div>
+              <div class="card-footer bg-transparent border-light border-top text-muted">{{item.updatedAt}}</div>
+          </div> 
+      </div> 
+    </div>
   </div>
 
+  <!-- Form Add task-->
+    <div class="container" v-if="page == 'form-add'">
+      <form id="form-add" v-on:submit.prevent="addTask">
+          <h1>Add Task</h1>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Task Title</label>
+            <input type="text" class="form-control" aria-describedby="emailHelp" v-model="tasks.title">
+          </div>
+          <div class="form-group mb-3">
+              <label for="exampleFormControlTextarea1">Description</label>
+              <textarea class="form-control" rows="3" v-model="tasks.description"></textarea>
+          </div>
+  
+          <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Category</label>
+              </div>
+              <select class="custom-select" v-model:value = "tasks.category">
+                <option selected>Choose</option>
+                <option value="backLog" >Back Log</option>
+                <option value="todo">Todo</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+          <button type="submit" class="btn btn-danger" @click.prevent="cancelBtn" >Cancel</button>
+        </form>
+    </div>
   <!-- Form Edit task-->
-  <div class="container">
-    <form id="form-edit">
+  <div class="container" v-if="page == 'form-edit'">
+    <form id="form-edit" >
         <h1>Edit Task</h1>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Task Title</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <input type="text" class="form-control" aria-describedby="emailHelp">
         </div>
         <div class="form-group mb-3">
             <label for="exampleFormControlTextarea1">Description</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea class="form-control" rows="3"></textarea>
         </div>
-        
+
         <div class="input-group mb-3">
             <div class="input-group-prepend">
               <label class="input-group-text" for="inputGroupSelect01">Category</label>
             </div>
-            <select class="custom-select" id="inputGroupSelect01">
+            <select class="custom-select">
               <option selected>Choose</option>
               <option value="backLog">Back Log</option>
               <option value="todo">Todo</option>
@@ -173,53 +175,55 @@
   </div>
 
   <!-- Form log In -->
-  <div class="container">
-    <form id="form-login">
+  <div class="container" v-if="page == 'login'">
+    <form id="form-login" v-on:submit.prevent="login">
         <h1>Log In</h1>
         <div class="form-group mb-3">
           <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" >
         </div>
         <div class="form-group mb-3">
           <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" v-model='password' >
         </div>
-        
+
         <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary btn-lg btn-block">Log In</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Log In</button>
             <div style="text-align: center;">Or</div>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            <div id="to-signUp"><a href="" style="color: blue;">Don't have account?</a> </div>
+            <div id="to-signUp">Don't have account? <a @click.prevent="registerForm" href="" style="color: blue;">Register Here</a> </div>
         </div>
-        
-      </form>
+    </form>
   </div>
-  
-  <!-- Form Register -->
-  <div class="container">
-    <form id="form-register">
+
+<!-- Form Register -->
+  <div class="container" v-if="page == 'register'">
+    <form id="form-register" v-on:submit.prevent="register">
         <h1>Register</h1>
         <div class="form-group mb-3">
           <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email"  v-model="user.email">
           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group mb-3">
             <label for="exampleInputPassword1">Username</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Username">
+            <input type="text" class="form-control" placeholder="Username"  v-model="user.username">
           </div>
         <div class="form-group mb-3">
           <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password"  v-model="user.password">
         </div>
-        
+
         <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary">Submit</button>
-            <div id="to-logIn"><a href="" style="color: blue;">Already have an account?</a></div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <div id="to-logIn"><a @click.prevent="loginForm"  href="" style="color: blue;">Already have an account?</a></div>
         </div>
       </form>
   </div>
-
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="main.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>
