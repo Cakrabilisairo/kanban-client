@@ -36,6 +36,9 @@ var app = new Vue({
       registerForm(){
         this.gantiHalaman('register')
       },
+      loginForm(){
+        this.gantiHalaman('login')
+      },
 
       register(){
         axios({
@@ -89,21 +92,21 @@ var app = new Vue({
         this.gantiHalaman('form-add')
       },
 
-      // deleteTask(){
-      //   axios({
-      //     method: 'GET',
-      //     url: this.server+'/delete/:id',
-      //     headers:{
-      //       "access_token" : localStorage.access_token
-      //     }
-      //   })
-      //   .then(response=>{
-      //     this.checkAuth()
-      //   })
-      //   .catch(err=>{
-      //     console.log(err)
-      //   })
-      // },
+      deleteTask(){
+        axios({
+          method: 'GET',
+          url: this.server+'/delete/'+key,
+          headers:{
+            "access_token" : localStorage.access_token
+          }
+        })
+        .then(response=>{
+          this.checkAuth()
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      },
 
       addTask(){
         axios({

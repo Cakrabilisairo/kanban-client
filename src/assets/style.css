@@ -1,12 +1,13 @@
-.backlog, .todo, .doing, .done{
+#flex-child{
+    flex-grow: 1;
+}
+#category-list{
     background-color: rgb(212, 208, 208);
     border-radius: 10px;
     padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
+    flex-grow: 1;
+    min-width: 300px;
     max-width: 300px;
-    
 }
 
 .container{
@@ -22,9 +23,8 @@ a{
     color: red;
 }
 
-#category{
-    display:flex;
-    justify-content: space-between;
+.category{
+    display:flex; 
 }
 
 .add_box{
