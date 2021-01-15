@@ -8,7 +8,8 @@
         :listDone="listDone"
         @checkAuth="checkAuth"
         @changePage="changePage"
-        @findOne="findOne" 
+        @editCategory="editCategory"
+        @editTask="editTask" 
      ></ListCategory>
  </div>
 </template>
@@ -27,8 +28,11 @@ export default {
         changePage(page){
             this.$emit("changePage", "form-edit-task")
         },
-        findOne(id){
-            this.$emit("findOne", `${id}`)
+        editTask(id){
+            this.$emit("editTask", `${id}`)
+        },
+        editCategory(id){
+            this.$emit("editCategory", `${id}`)
         }
     },
     props: [

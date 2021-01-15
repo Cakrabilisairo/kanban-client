@@ -30,6 +30,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2' 
 export default {
     name: "FormAddTask",
     data(){
@@ -56,17 +57,33 @@ export default {
                 }
             })
             .then(response=>{
+                this.successAddResponse(this.category)
                 this.$emit("checkAuth")
                 this.title = ''
                 this.description = ''
                 this.category = ''
             })
             .catch(err=>{
-                console.log(err)
+                Swal.fire({
+                icon: 'error',
+                title: `${err.response.data[0].message}`,
+                showConfirmButton: false,
+                timer: 3000
+                })
             })
         },
         cancel(){
             this.$emit("checkAuth")
+        },
+
+        successAddResponse(category){
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: `Your task has been added to ${category}`,
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     }
 }

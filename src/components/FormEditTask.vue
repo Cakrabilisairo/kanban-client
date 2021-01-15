@@ -10,26 +10,15 @@
             <label for="exampleFormControlTextarea1">Description</label>
             <textarea class="form-control" rows="3" v-model="description"></textarea>
         </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="inputGroupSelect01">Category</label>
-            </div>
-            <select class="custom-select" v-model="category">
-              <option selected>Choose</option>
-              <option value="backLog">Back Log</option>
-              <option value="todo">Todo</option>
-              <option value="doing">Doing</option>
-              <option value="done">Done</option>
-            </select>
-          </div>
         <button type="submit" class="btn btn-primary" @click.prevent="editTask(task.id)">Edit Task</button>
-        <button type="submit" class="btn btn-danger">Cancel</button>
+        <button type="submit" class="btn btn-danger" @click.prevent="cancel">Cancel</button>
       </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2' 
 export default {
     name: "FormEditTask",
     data(){
@@ -37,33 +26,52 @@ export default {
             server: 'http://localhost:3000',
             title: this.task.title,
             description: this.task.description,
-            category: this.task.category
         }
     },
     methods:{
         editTask(id){
-            axios({
-                method: 'PUT',
-                url: `${this.server}/task/${id}`,
-                headers: {
-                    "access_token" : localStorage.access_token
-                },
-                data:{
-                    title: this.title,
-                    description:this.description,
-                    category: this.category
-                }
+            Swal.fire({
+                  title: 'Do you want to save the changes?',
+                  showCancelButton: true,
+                  confirmButtonText: `Save`,
+                }).
+                then((result) => {
+                    if (result.isConfirmed) {
+                    axios({
+                        method: 'PUT',
+                        url: `${this.server}/task/${id}`,
+                        headers: {
+                            "access_token" : localStorage.access_token
+                        },
+                        data:{
+                            title: this.title,
+                            description:this.description,
+                            category: this.category
+                        }
+                    })
+                    .then(response=>{
+                        this.$emit("checkAuth")
+                         Swal.fire('Saved!', '', 'success')
+                    })
+                    .catch(err=>{
+                        Swal.fire({
+                           icon: 'error',
+                           title: `${err.response.data[0].message}`,
+                           showConfirmButton: false,
+                           timer: 3000
+                        })
+                    })
+                   
+                }else{
+                    this.cancel()
+                } 
             })
-            .then(response=>{
-                this.$emit("checkAuth")
-            })
-            .catch(err=>{
-                console.log(err)
-            })
+        },
+        cancel(){
+            this.$emit("checkAuth")
         }
     },
     props: ["task"]
-
 }
 </script>
 

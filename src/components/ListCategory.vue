@@ -8,32 +8,32 @@
                         <ListTask 
                         :listTask="listBackLog"
                         @checkAuth="checkAuth"
-                        @changePage="changePage"
-                        @findOne="findOne"
+                        @editCategory="editCategory"
+                        @editTask="editTask"
                         ></ListTask>
                     </div>
                     <div v-if="category == 'Todo'">
                         <ListTask 
                         :listTask="listTodo"
                         @checkAuth="checkAuth"
-                        @changePage="changePage"
-                        @findOne="findOne"
+                        @editCategory="editCategory"
+                        @editTask="editTask"
                         ></ListTask>
                     </div>
                     <div v-if="category == 'Doing'">
                         <ListTask 
                         :listTask="listDoing"
                         @checkAuth="checkAuth"
-                        @changePage="changePage"
-                        @findOne="findOne"
+                        @editCategory="editCategory"
+                        @editTask="editTask"
                         ></ListTask>
                     </div>
                     <div v-if="category == 'Done'">
                         <ListTask 
                         :listTask="listDone"
                         @checkAuth="checkAuth"
-                        @changePage="changePage"
-                        @findOne="findOne"
+                        @editCategory="editCategory"
+                        @editTask="editTask"
                         ></ListTask>
                     </div>
                 </div>
@@ -44,6 +44,7 @@
 
 <script>
 import ListTask from "./ListTask"
+import Swal from 'sweetalert2'
 export default {
     name: "ListCategory",
     components:{
@@ -53,11 +54,11 @@ export default {
         checkAuth(){
             this.$emit("checkAuth")
         },
-        changePage(page){
-            this.$emit("changePage", "form-edit-task")
+        editCategory(id){
+            this.$emit("editCategory", `${id}`)
         },
-        findOne(id){
-            this.$emit("findOne", `${id}`)
+        editTask(id){
+            this.$emit("editTask", `${id}`)
         }
     },
       props: [

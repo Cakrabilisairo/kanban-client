@@ -13,8 +13,8 @@
             :listDoing="listDoing"
             :listDone="listDone"
             @checkAuth="checkAuth"
-            @changePage="changePage"
-            @findOne="findOne"
+            @editCategory="editCategory"
+            @editTask="editTask"
             ></Home>
         </div>
 
@@ -26,9 +26,9 @@
         </div>
 
         <div v-if="currentPage == 'register'">
-            <RegisterForm
+            <FormRegister
             @checkAuth="checkAuth"
-            ></RegisterForm>
+            ></FormRegister>
         </div>
         <div v-if="currentPage == 'form-add'">
             <FormAddTask
@@ -42,6 +42,13 @@
             @checkAuth="checkAuth"
             ></FormEditTask>
         </div>
+
+        <div v-if="currentPage == 'form-edit-category'">
+            <FormEditCategory
+            :task="task"
+            @checkAuth="checkAuth"
+            ></FormEditCategory>
+        </div>
     </div>
 </template>
 
@@ -53,11 +60,13 @@ import FormLogin from "./components/FormLogin"
 import FormRegister from "./components/FormRegister"
 import FormAddTask from "./components/FormAddTask"
 import FormEditTask from "./components/FormEditTask"
+import FormEditCategory from "./components/FormEditCategory"
+import Swal from 'sweetalert2'
 export default {
     name: "App",
     data(){
         return{
-            currentPage: "register",
+            currentPage: "login",
             server:'http://localhost:3000',
             listCategory:['Back Log', 'Todo', 'Doing', 'Done'],
             listBackLog : [],
@@ -76,7 +85,8 @@ export default {
         NavBar,
         FormRegister,
         FormAddTask,
-        FormEditTask
+        FormEditTask,
+        FormEditCategory
     },
     methods: {
        fetchListTask(){
@@ -95,10 +105,15 @@ export default {
                 this.listDone = data.filter(data => data.category == 'done')
            })
            .catch(err=>{
-               console.log(err)
+                Swal.fire({
+                    icon: 'error',
+                    title: `${err}`,
+                    showConfirmButton: false,
+                    timer: 2000
+                })
            })
        },
-       findOne(id){
+       editTask(id){
            axios({
                method: "GET",
                url: `${this.server}/task/${id}`,
@@ -109,9 +124,37 @@ export default {
            .then(response=>{
                 let data = response.data
                 this.task = data
+                this.changePage('form-edit-task')
            })
            .catch(err=>{
-               console.log(err)
+                Swal.fire({
+                   icon: 'error',
+                   title: `${err.response.data.message}`,
+                   showConfirmButton: false,
+                   timer: 3000
+                })
+           })
+       },
+       editCategory(id){
+           axios({
+               method: "GET",
+               url: `${this.server}/task/${id}`,
+                headers:{
+                    "access_token" : localStorage.access_token
+               },
+           })
+           .then(response=>{
+                let data = response.data
+                this.task = data
+                this.changePage('form-edit-category')
+           })
+           .catch(err=>{
+                Swal.fire({
+                   icon: 'error',
+                   title: `${err.response.data.message}`,
+                   showConfirmButton: false,
+                   timer: 3000
+                })
            })
        },
 
@@ -126,14 +169,12 @@ export default {
         },
 
         changePage(page){
-            this.findOne()
             this.currentPage = page
-            
-            
         }
     },
     created(){
         this.checkAuth()
+        
     }
 }
 </script>
