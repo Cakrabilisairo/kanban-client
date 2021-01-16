@@ -35,7 +35,7 @@ export default {
     name: "FormAddTask",
     data(){
         return {
-            server:'http://localhost:3000',
+            server:'https://kanban-app-server-h8.herokuapp.com',
             title: '',
             description: '',
             category: 'Choose'

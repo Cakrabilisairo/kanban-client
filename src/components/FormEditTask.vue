@@ -23,7 +23,7 @@ export default {
     name: "FormEditTask",
     data(){
         return{
-            server: 'http://localhost:3000',
+            server: 'https://kanban-app-server-h8.herokuapp.com',
             title: this.task.title,
             description: this.task.description,
         }

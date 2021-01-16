@@ -67,7 +67,7 @@ export default {
     data(){
         return{
             currentPage: "login",
-            server:'http://localhost:3000',
+            server:'https://kanban-app-server-h8.herokuapp.com',
             listCategory:['Back Log', 'Todo', 'Doing', 'Done'],
             listBackLog : [],
             listTodo: [],

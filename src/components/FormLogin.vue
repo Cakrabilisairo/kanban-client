@@ -31,12 +31,12 @@ export default {
       return {
         email: '',
         password: '',
-        server:'http://localhost:3000',
+        server:'https://kanban-app-server-h8.herokuapp.com',
         params: {
           client_id: process.env.GOOGLE_CLIENT_ID
         },
         renderParams: {
-            width: 350,
+            width: 300,
             height: 50,
             longtitle: true,
             isbutton: true
@@ -51,7 +51,7 @@ export default {
        login(){
            axios({
                method: 'POST',
-               url:`${this.server}/login`,
+               url: "https://kanban-app-server-h8.herokuapp.com/login",
                data:{
                    email: this.email,
                    password: this.password
